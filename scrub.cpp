@@ -95,6 +95,27 @@ vector<record> string2record(char a[]) {
 	return rec_vec;
 }
 
+bool islater(record r1, record r2) {
+    //return true if r1 is later record than r2
+    //which means the time value of r1 is greater than r2
+    if (r1.time.min != r2.time.min) {
+        return (r1.time.min > r2.time.min) ? true : false; }
+    else return (r1.time.sec > r2.time.sec) ? true : false;
+}
+
+void initial_window(vector<record>& src, int start, int end) {
+    //this is a small sort so the advantage of quick sort over bubble sort is not obvious
+    //so here I just implement a simple bubble sort
+    
+    int n = end - start;
+    for (int i = 0; i < n; i++) {
+        for (int j = start + 1; j <= end - i; j++) {
+            if (islater(src[j - 1], src[j])) swap(src, j - 1, j);
+        }
+    }
+    
+}
+
 
 int main(int argc, char **argv){
 
