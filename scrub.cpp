@@ -52,7 +52,7 @@ vector<record> string2record(char a[]) {
 
 		while (it != temp.end() && (*it) != '\n')
 		{
-			cout << *it;
+			//cout << *it;
 			buffer += *it;
 			it++;
 		}
@@ -98,29 +98,27 @@ vector<record> string2record(char a[]) {
 
 int main(int argc, char **argv){
 
-    int FILESIZE=stoi(argv[1]);
-
-
+    MPI_Offset FILESIZE;//=stoi(argv[1]);
+    
 	int rank, size, bufsize, nints;
 	MPI_File fh;
 	MPI_Status status;
 	MPI_Init(&argc, &argv);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data10k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
+    
+    MPI_File_get_size(fh, &FILESIZE);
+    
 	bufsize = FILESIZE/size;
 	nints = bufsize/sizeof(char);
 	char buf[nints];
+	
     
-    cout<<"nints is "<<nints;
-	
-    MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data10k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
     MPI_File_read_at(fh, rank*bufsize, buf, nints, MPI_BYTE, &status);
-	
-    cout<<endl<<buf<<endl;
     
     vector<record> vec_rec=string2record(buf);
-    
-    
+    cout<<"cluster: "<<rank<<" the size of vector is"<<vec_rec.size()<<endl;
     
     //printf("\nrank: %d, buf[%d]: %d \n", rank, rank*bufsize, buf[0]);
 	
