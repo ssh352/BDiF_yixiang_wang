@@ -1,10 +1,11 @@
-#include<stdio.h>
+#include <stdio.h>
 #include "mpi.h"
 #include <iostream>
 #include <string>
 #include <iomanip>
 #include <vector>
 #include <fstream>
+#include <cmath>
 using namespace std;
 
 struct time_struct {
@@ -15,7 +16,7 @@ struct time_struct {
 };
 
 struct record {
-	 time_struct time;//use a double to represent the time
+    time_struct time;
 	float price;
 	int size;
 };
@@ -40,59 +41,71 @@ time_struct timeConvert(string source) {
 }
 
 vector<record> string2record(char a[]) {
-	string temp = a;
-	string buffer;
-	vector<record> rec_vec;
-	string::iterator it = temp.begin();
-	//skip the first first record since it is likely to be broken
-	while (it != temp.end() && (*it) != '\n') it++;
-	it++;
+    string temp = a;
+    string buffer;
+    vector<record> rec_vec;
+    string::iterator it = temp.begin();
+    //skip the first first record since it is likely to be broken
+    while (it != temp.end() && (*it) != '\n') it++;
+    it++;
+    
+    for (; it != temp.end(); it++) {
+        
+        while (it != temp.end() && (*it) != '\n')
+        {
+            //cout << *it;
+            buffer += *it;
+            it++;
+        }
+        
+        if (it == temp.end()) return rec_vec;
+        
+        string::iterator it_buf = buffer.begin();
+        record rec_temp;
+        string temp_s;
+        try {
+            while (*it_buf != ',')
+            {
+                temp_s += *it_buf;
+                it_buf++;
+            }
+            rec_temp.time = timeConvert(temp_s);
+            temp_s.clear();
+            
+            //get the price
+            it_buf++;
+            while (*it_buf != ',')
+            {
+                temp_s += *it_buf;
+                it_buf++;
+            }
+            rec_temp.price = stod(temp_s);
+            temp_s.clear();
+            
+            //get the size
+            it_buf++;
+            while (it_buf != buffer.end())
+            {
+                temp_s += *it_buf;
+                it_buf++;
+            }
+            rec_temp.size = stoi(temp_s);
+            
+            rec_vec.push_back(rec_temp);
+            buffer.clear();
+        }//for try
+        catch (...) {//catch every thing
+            cout << endl << "invalid data format!" << endl;
+        }
+    }
+    return rec_vec;
+}
 
-	for (; it != temp.end(); it++) {
-
-		while (it != temp.end() && (*it) != '\n')
-		{
-			//cout << *it;
-			buffer += *it;
-			it++;
-		}
-
-		if (it == temp.end()) return rec_vec;
-
-		string::iterator it_buf = buffer.begin();
-		record rec_temp;
-		string temp_s;
-		while (*it_buf != ',')
-		{
-			temp_s += *it_buf;
-			it_buf++;
-		}
-		rec_temp.time = timeConvert(temp_s);
-		temp_s.clear();
-
-		//get the price
-		it_buf++;
-		while (*it_buf != ',')
-		{
-			temp_s += *it_buf;
-			it_buf++;
-		}
-		rec_temp.price = stod(temp_s);
-		temp_s.clear();
-
-		//get the size
-		it_buf++;
-		while (it_buf != buffer.end())
-		{
-			temp_s += *it_buf;
-			it_buf++;
-		}
-		rec_temp.size = stoi(temp_s);
-
-		rec_vec.push_back(rec_temp);
-		buffer.clear();
-	}
-	return rec_vec;
+void swap(vector<record>& src, int p1, int p2) {
+    record temp;
+    temp = src[p1];
+    src[p1] = src[p2];
+    src[p2] = temp;
 }
 
 bool islater(record r1, record r2) {
@@ -116,6 +129,74 @@ void initial_window(vector<record>& src, int start, int end) {
     
 }
 
+bool mean_variance_valid(double x, double mean, double st, double tol) {
+    return abs(x - mean) < tol*st;
+}
+
+pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size,double tol=3) {
+    
+    pair<vector<record>, vector<record> > res;
+    
+    //window_size = 20;
+    //if (20 > src.size() / 10) window_size = src.size() / 10;
+    initial_window(src, 0, window_size - 1);
+    vector<record>::iterator it_src = src.begin();
+    
+    vector<record> signal;
+    vector<record>::iterator it_sig = signal.begin();
+    vector<record> noise;
+    vector<record>::iterator it_nos = noise.begin();
+    double sum = 0;
+    double squared_sum = 0;
+    double running_mean = 0;
+    for (int count = 0; count < window_size; count++) {
+        sum += (*it_src).price;
+        it_src++;
+    }
+    double number = window_size;
+    running_mean = sum / number;
+    
+    for (int count = 0; count < window_size; count++) {
+        squared_sum += pow(src[count].price-running_mean,2);
+    }
+    
+    for (; it_src != src.end(); it_src++) {
+        if (islater(*(it_src - window_size), *it_src)) {
+            it_src = src.erase(it_src);
+            it_src--;
+        }
+        else if (islater(*(it_src - 1), *it_src)) {
+            sum += (*it_src).price;
+            number += 1;
+            running_mean = sum / number;//update the running mean
+            squared_sum += pow((*it_src).price - running_mean, 2);
+            vector<record>::iterator it_temp = it_src;
+            while (islater(*(it_temp - 1), *it_temp)) {
+                record temp_record = *it_temp;
+                *it_temp = *(it_temp - 1);
+                *(it_temp - 1) = temp_record;
+                it_temp--;
+            }
+        }
+        else {
+            sum += (*it_src).price;
+            number += 1;
+            running_mean = sum / number;//update the running mean
+            squared_sum += pow((*it_src).price - running_mean, 2);
+        }
+    }
+    
+    double mean = sum / number;
+    double sd = sqrt(squared_sum / (number - 1.0));
+    
+    for (it_src = src.begin(); it_src != src.end(); it_src++) {
+        if (mean_variance_valid((*it_src).price, mean, sd, tol)) signal.push_back(*it_src);
+        else noise.push_back(*it_src);
+    }
+    
+    res = make_pair(signal, noise);
+    return res;
+}
 
 int main(int argc, char **argv){
 
