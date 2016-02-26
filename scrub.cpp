@@ -43,6 +43,7 @@ time_struct timeConvert(string source) {
 }
 
 vector<record> string2record(char a[]) {
+    LOG(INFO) << "convert to a vector of records";
     string temp = a;
     string buffer;
     vector<record> rec_vec;
@@ -197,6 +198,8 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
         else noise.push_back(*it_src);
     }
     
+    LOG(INFO) << "finished scrubbing";
+    
     res = make_pair(signal, noise);
     return res;
 }
@@ -227,24 +230,40 @@ int main(int argc, char **argv){
     
     vector<record> vec_rec=string2record(buf);
     cout<<"cluster: "<<rank<<" the size of vector is"<<vec_rec.size()<<endl;
+    MPI_File_close(&fh);
     
-    pair<vector<record>, vector<record>> result = filter(vec_rec, 10,2);
+    
+    pair<vector<record>, vector<record> > result = filter(vec_rec, 10,2);
+    
     vector<record> signal = result.first;
     vector<record> noise = result.second;
     
-    string test_string="just for test,don't be series. rank is: "+rank;
-    MPI_Offset offset_out=test_string.size();
+    string test_string="just for test,don't be series. rank is: ";
+    test_string+=to_string(rank);
+    test_string+='\n';
+    cout<<test_string;
+    MPI_Offset offset_out=test_string.size();//the offset of the local node
     
-    int * send_offset;
-    *send_offset=rank;
-    rbuf = (int *)malloc(size*sizeof(int));
+    MPI_Offset * send_offset = new long long;
+    *send_offset=offset_out;
     
-    MPI_Allgather( send_offset, 1, MPI_INT, rbuf, 1, MPI_INT, MPI_COMM_WORLD);
+    long long * rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
+    MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
     
-	
     
-    MPI_File_close(&fh);
-	MPI_Finalize();
+    MPI_Offset cumulative_offset=0;
+    
+    for (int i=0;i<=rank;i++){
+        cumulative_offset+=rbuf[i];
+    }
+    
+    
+    MPI_File fh_out;
+    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/out.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
+    MPI_File_write_at(fh_out, cumulative_offset, test_string.c_str(), offset_out, MPI_BYTE, &status);
+	MPI_File_close(&fh_out);
 
+    
+    MPI_Finalize();
 	return 0;
 }
