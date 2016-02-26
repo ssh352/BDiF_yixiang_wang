@@ -6,6 +6,8 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
+#include "glog/logging.h"
+
 using namespace std;
 
 struct time_struct {
@@ -96,6 +98,7 @@ vector<record> string2record(char a[]) {
         }//for try
         catch (...) {//catch every thing
             cout << endl << "invalid data format!" << endl;
+            LOG(INFO) << "Invalid data format when converting from string to record.";
         }
     }
     return rec_vec;
@@ -119,7 +122,7 @@ bool islater(record r1, record r2) {
 void initial_window(vector<record>& src, int start, int end) {
     //this is a small sort so the advantage of quick sort over bubble sort is not obvious
     //so here I just implement a simple bubble sort
-    
+    LOG(INFO) << "sliding window is initialized.";
     int n = end - start;
     for (int i = 0; i < n; i++) {
         for (int j = start + 1; j <= end - i; j++) {
@@ -136,7 +139,7 @@ bool mean_variance_valid(double x, double mean, double st, double tol) {
 pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size,double tol=3) {
     
     pair<vector<record>, vector<record> > res;
-    
+    LOG(INFO) << "initialize filter to scrub data";
     //window_size = 20;
     //if (20 > src.size() / 10) window_size = src.size() / 10;
     initial_window(src, 0, window_size - 1);
@@ -199,6 +202,8 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
 }
 
 int main(int argc, char **argv){
+    
+    google::InitGoogleLogging(argv[0]);
 
     MPI_Offset FILESIZE;//=stoi(argv[1]);
     
@@ -206,6 +211,7 @@ int main(int argc, char **argv){
 	MPI_File fh;
 	MPI_Status status;
 	MPI_Init(&argc, &argv);
+    LOG(INFO) << "MPI Initialized.";
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data10k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
@@ -222,7 +228,19 @@ int main(int argc, char **argv){
     vector<record> vec_rec=string2record(buf);
     cout<<"cluster: "<<rank<<" the size of vector is"<<vec_rec.size()<<endl;
     
-    //printf("\nrank: %d, buf[%d]: %d \n", rank, rank*bufsize, buf[0]);
+    pair<vector<record>, vector<record>> result = filter(vec_rec, 10,2);
+    vector<record> signal = result.first;
+    vector<record> noise = result.second;
+    
+    string test_string="just for test,don't be series. rank is: "+rank;
+    MPI_Offset offset_out=test_string.size();
+    
+    int * send_offset;
+    *send_offset=rank;
+    rbuf = (int *)malloc(size*sizeof(int));
+    
+    MPI_Allgather( send_offset, 1, MPI_INT, rbuf, 1, MPI_INT, MPI_COMM_WORLD);
+    
 	
     
     MPI_File_close(&fh);
