@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cmath>
 #include "glog/logging.h"
+#include <sstream>
 
 using namespace std;
 
@@ -201,6 +202,43 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
     LOG(INFO) << "finished scrubbing";
     
     res = make_pair(signal, noise);
+    return res;
+}
+
+string record2string(record src) {
+    string res;
+    sstream stream_out;
+    cout << endl << "min is " << long long (src.time.min) << endl << endl;
+    
+    (long long) date = (long long)(src.time.min) / 1000000;
+    (long long) temp = (long long)(src.time.min) % 1000000;
+    (long long) hour = temp / 10000;
+    temp = temp % 10000;
+    (long long) min = temp / 100;
+    (long long) sec = temp % 100;
+    sprintf(res,)
+    res += ':';
+    res += to_string(hour);
+    res += ':';
+    res += to_string(min);
+    res += ':';
+    res += to_string(sec);
+    res += '.';
+    res += to_string(int(src.time.sec * 1000000));
+    res += ',';
+    res += to_string(src.price);
+    res += ',';
+    res += to_string(src.size);
+    
+    return res;
+}
+
+string record_vec2string(vector<record> src) {
+    string res;
+    for (vector<record>::iterator it_src = src.begin(); it_src != src.end(); it_src++) {
+        res += record2string(*it_src);
+        res += '\n';
+    }
     return res;
 }
 
