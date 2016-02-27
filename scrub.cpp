@@ -206,31 +206,17 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
 }
 
 string record2string(record src) {
-    string res;
-    sstream stream_out;
-    cout << endl << "min is " << long long (src.time.min) << endl << endl;
-    
-    (long long) date = (long long)(src.time.min) / 1000000;
-    (long long) temp = (long long)(src.time.min) % 1000000;
-    (long long) hour = temp / 10000;
+    stringstream stream_out;
+    cout << endl << "min is " << (long long) (src.time.min) << endl << endl;
+    long long date = (long long)(src.time.min) / 1000000;
+    long long temp = (long long)(src.time.min) % 1000000;
+    long long hour = temp / 10000;
     temp = temp % 10000;
-    (long long) min = temp / 100;
-    (long long) sec = temp % 100;
-    sprintf(res,)
-    res += ':';
-    res += to_string(hour);
-    res += ':';
-    res += to_string(min);
-    res += ':';
-    res += to_string(sec);
-    res += '.';
-    res += to_string(int(src.time.sec * 1000000));
-    res += ',';
-    res += to_string(src.price);
-    res += ',';
-    res += to_string(src.size);
-    
-    return res;
+    long long min = temp / 100;
+    long long sec = temp % 100;
+    stream_out << date << ':' << hour << ':' << min << ':' << sec << '.' << int(src.time.sec * 1000000);
+    stream_out << ',' << src.price << ',' << src.size;
+    return stream_out.str();
 }
 
 string record_vec2string(vector<record> src) {
