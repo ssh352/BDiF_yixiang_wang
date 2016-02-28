@@ -1,6 +1,10 @@
-For OpenMPI on local computer
+The scrub program uses glog (google log) library to generate the log file.
+glog need to be installed with glog_install included in this repository
 
-To compile, run:
+If you have installed the glog library in the same folder with scrub.cpp:
+you can:
+
+compile the proram with:
 
 mpic++ -o scrub -I glog/include -L glog/lib/ -lglog scrub.cpp
 
@@ -8,19 +12,16 @@ To run the executable, use the following code:
 
 GLOG_logtostderr=1  mpirun -np 16 scrub "data10k.txt" 2>log
 
+In case of glog is not installed, I included a no logging version where all 
+logging functions are commentte out
 
-For MPI on penzias
+To compile the no log version, run:
 
-(for some reason glog library doesn't work on penzias. 
-All logging functions are commentted out in the penzias version)
-
-To compile, run:
-
-mpic++ -o scrub_p scrub_penzias.cpp
+mpic++ -o scrub_nl scrub_no_log.cpp
 
 To run the executable, use the following code:
 
-mpirun -np 16 scrub_p "data10k.txt" 2>log
+mpirun -np 16 scrub_nl "data10k.txt" 2>log
 
 
 NOTE:
