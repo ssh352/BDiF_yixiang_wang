@@ -7,7 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
-#include "glog/logging.h"
+//#include "glog/logging.h"
 #include <sstream>
 #include <fstream>
 #include <time.h>
@@ -47,7 +47,7 @@ time_struct timeConvert(string source) {
 }
 
 vector<record> string2record(char a[]) {
-    LOG(INFO) << "convert to a vector of records";
+    //LOG(INFO) << "convert to a vector of records";
     string temp = a;
     string buffer;
     vector<record> rec_vec;
@@ -103,7 +103,7 @@ vector<record> string2record(char a[]) {
         }//for try
         catch (...) {//catch every thing
             cout << endl << "invalid data format!" << endl;
-            LOG(INFO) << "Invalid data format when converting from string to record.";
+            //LOG(INFO) << "Invalid data format when converting from string to record.";
         }
     }
     return rec_vec;
@@ -128,7 +128,7 @@ void initial_window(vector<record>& src, int start, int end) {
     //this is a small sort
     //so the advantage of quick sort over bubble sort is not obvious
     //so here I just implement a simple bubble sort
-    LOG(INFO) << "sliding window is initialized.";
+    //LOG(INFO) << "sliding window is initialized.";
     int n = end - start;
     for (int i = 0; i < n; i++) {
         for (int j = start + 1; j <= end - i; j++) {
@@ -197,9 +197,9 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
     
     if (window_size>src.size())window_size=src.size()-5;//to handle the case that the input data set is too small
     
-    LOG(INFO) << "The records number processed in this node is "<<src.size();
+    //LOG(INFO) << "The records number processed in this node is "<<src.size();
     pair<vector<record>, vector<record> > res;
-    LOG(INFO) << "initialize filter to scrub data";
+    //LOG(INFO) << "initialize filter to scrub data";
 
     initial_window(src, 0, window_size - 1);
     vector<record>::iterator it_src = src.begin();
@@ -257,9 +257,9 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
         else noise.push_back(*it_src);
     }
     
-    LOG(INFO) << "finished scrubbing";
-    LOG(INFO)<< "noise size of this node is"<<noise.size();
-    LOG(INFO)<< "signal size of this node is"<<signal.size();
+    //LOG(INFO) << "finished scrubbing";
+    //LOG(INFO)<< "noise size of this node is"<<noise.size();
+    //LOG(INFO)<< "signal size of this node is"<<signal.size();
     
     res = make_pair(signal, noise);
     moments(signal, mom);
@@ -294,7 +294,7 @@ int main(int argc, char **argv){
     
     t0=clock();
     
-    google::InitGoogleLogging(argv[0]);
+    //google::InitGoogleLogging(argv[0]);
 
     MPI_Offset FILESIZE;//=stoi(argv[1]);
     
@@ -302,7 +302,7 @@ int main(int argc, char **argv){
 	MPI_File fh;
 	MPI_Status status;
 	MPI_Init(&argc, &argv);
-    LOG(INFO) << "MPI Initialized.";
+    //LOG(INFO) << "MPI Initialized.";
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_File_open(MPI_COMM_WORLD,argv[1],MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
@@ -345,7 +345,9 @@ int main(int argc, char **argv){
     }
     MPI_File fh_out;
     MPI_File_open(MPI_COMM_WORLD, "signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
-    MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
+    char * signal_char=new char[signal_string.size()];
+    strcpy(signal_char,signal_string.c_str());
+    MPI_File_write_at(fh_out, cumulative_offset, signal_char, offset_out, MPI_BYTE, &status);
 	MPI_File_close(&fh_out);
     
     //write the noise to output file
@@ -363,7 +365,9 @@ int main(int argc, char **argv){
     }
     //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt"
     MPI_File_open(MPI_COMM_WORLD, "noise.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
-    MPI_File_write_at(fh_out, cumulative_offset, noise_string.c_str(), offset_out, MPI_BYTE, &status);
+    char * noise_char=new char[noise_string.size()];
+    strcpy(noise_char,noise_string.c_str());
+    MPI_File_write_at(fh_out, cumulative_offset, noise_char, offset_out, MPI_BYTE, &status);
     MPI_File_close(&fh_out);
     
     t3=clock();
