@@ -1,6 +1,10 @@
 The scrub program uses glog (google log) library to generate the log file.
 glog need to be installed with glog_install included in this repository
 
+(note that a glog directory already existed in the repository, however you 
+need to delete it and re-installed with glog_install after you clone the 
+repository)
+
 If you have installed the glog library in the same folder with scrub.cpp:
 you can:
 
