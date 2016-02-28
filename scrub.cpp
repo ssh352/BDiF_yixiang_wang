@@ -8,6 +8,7 @@
 #include <cmath>
 #include "glog/logging.h"
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -257,7 +258,6 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
 
 string record2string(record src) {
     stringstream stream_out;
-    cout << endl << "min is " << (long long) (src.time.min) << endl << endl;
     long long date = (long long)(src.time.min) / 1000000;
     long long temp = (long long)(src.time.min) % 1000000;
     long long hour = temp / 10000;
@@ -303,7 +303,6 @@ int main(int argc, char **argv){
     MPI_File_read_at(fh, rank*bufsize, buf, nints, MPI_BYTE, &status);
     
     vector<record> vec_rec=string2record(buf);
-    cout<<"cluster: "<<rank<<" the size of vector is"<<vec_rec.size()<<endl;
     MPI_File_close(&fh);
     
     vector<long double> moment(5, 0);
@@ -392,8 +391,10 @@ int main(int argc, char **argv){
         }
         cout<<norm_res.str();
         
-        
-    
+        ofstream norm_out;
+        norm_out.open("/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/normality_test_result.txt");
+        norm_out<<norm_res.str();
+        norm_out.close();
     }
     
     
