@@ -397,9 +397,6 @@ int main(int argc, char **argv){
         norm_out.close();
     }
     
-    
-    
-    
     MPI_Finalize();
 	return 0;
 }
