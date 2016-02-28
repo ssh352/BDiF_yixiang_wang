@@ -299,7 +299,8 @@ int main(int argc, char **argv){
     LOG(INFO) << "MPI Initialized.";
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data100k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
+    MPI_File_open(MPI_COMM_WORLD,argv[1],MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
+    //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data1000k.txt"
     
     MPI_File_get_size(fh, &FILESIZE);
     
