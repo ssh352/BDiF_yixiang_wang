@@ -299,7 +299,7 @@ int main(int argc, char **argv){
     LOG(INFO) << "MPI Initialized.";
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
-    MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data10k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
+    MPI_File_open(MPI_COMM_WORLD,"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data100k.txt",MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
     
     MPI_File_get_size(fh, &FILESIZE);
     
@@ -389,8 +389,6 @@ int main(int argc, char **argv){
         stringstream norm_res;
         norm_res<<"Normality test: "<<endl;
         norm_res<<"Number of samples is: "<<num_samp<<endl;
-        norm_res<<"Kurtosis is : "<<cumulative_K<<endl;
-        norm_res<<"Skewness is : "<<cumulative_S<<endl;
         if (JBtest(temp)) {
             norm_res<<"Null hypothesis is accepted: normality test passed"<<endl;
         }
