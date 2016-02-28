@@ -123,7 +123,8 @@ bool islater(record r1, record r2) {
 }
 
 void initial_window(vector<record>& src, int start, int end) {
-    //this is a small sort so the advantage of quick sort over bubble sort is not obvious
+    //this is a small sort
+    //so the advantage of quick sort over bubble sort is not obvious
     //so here I just implement a simple bubble sort
     LOG(INFO) << "sliding window is initialized.";
     int n = end - start;
@@ -188,12 +189,16 @@ bool JBtest(vector<long double> moment_vec) {
     return moment_vec[0] * (pow(moment_vec[3], 2) / 6.0 + pow(moment_vec[4] - 3, 2) / 24.0) < 5.991465;
 }
 
+string record_vec2string(vector<record> src);
+
 pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size, vector<long double> &mom ,double tol=3) {
     
+    if (window_size>src.size())window_size=src.size()-5;//to handle the case that the input data set is too small
+    
+    LOG(INFO) << "The records number processed in this node is "<<src.size();
     pair<vector<record>, vector<record> > res;
     LOG(INFO) << "initialize filter to scrub data";
-    //window_size = 20;
-    //if (20 > src.size() / 10) window_size = src.size() / 10;
+
     initial_window(src, 0, window_size - 1);
     vector<record>::iterator it_src = src.begin();
     
@@ -217,6 +222,7 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
     
     for (; it_src != src.end(); it_src++) {
         if (islater(*(it_src - window_size), *it_src)) {
+            noise.push_back(*it_src);
             it_src = src.erase(it_src);
             it_src--;
         }
@@ -245,11 +251,13 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
     double sd = sqrt(squared_sum / (number - 1.0));
     
     for (it_src = src.begin(); it_src != src.end(); it_src++) {
-        if (mean_variance_valid((*it_src).price, mean, sd, tol)) signal.push_back(*it_src);
+        if (mean_variance_valid((*it_src).price, mean, sd, tol)&&(*it_src).size>0) signal.push_back(*it_src);
         else noise.push_back(*it_src);
     }
     
     LOG(INFO) << "finished scrubbing";
+    LOG(INFO)<< "noise size of this node is"<<noise.size();
+    LOG(INFO)<< "signal size of this node is"<<signal.size();
     
     res = make_pair(signal, noise);
     moments(signal, mom);
@@ -306,7 +314,7 @@ int main(int argc, char **argv){
     MPI_File_close(&fh);
     
     vector<long double> moment(5, 0);
-    pair<vector<record>, vector<record> > result = filter(vec_rec, 10,moment,2);
+    pair<vector<record>, vector<record> > result = filter(vec_rec, 500,moment,2);
     
     vector<record> signal = result.first;
     vector<record> noise = result.second;
