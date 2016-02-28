@@ -324,7 +324,7 @@ int main(int argc, char **argv){
         cumulative_offset+=rbuf[i];
     }
     MPI_File fh_out;
-    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
+    MPI_File_open(MPI_COMM_WORLD, "signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
     MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
 	MPI_File_close(&fh_out);
     
@@ -341,12 +341,63 @@ int main(int argc, char **argv){
     for (int i=0;i<=rank;i++){
         cumulative_offset+=rbuf[i];
     }
-    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
+    //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt"
+    MPI_File_open(MPI_COMM_WORLD, "noise.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
     MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
     MPI_File_close(&fh_out);
     
     
-
+    //gather all the information about the normality test
+    long double N = moment[0];//number of samples
+    long double S = moment[3];//skewness
+    long double K = moment[4];//kurtosis
+    long double * norm_buf = (long double *)malloc(size*3*sizeof(long double));//define the receive buffer
+    
+    long double norm_send[3];
+    norm_send[0]=N;
+    norm_send[1]=S;
+    norm_send[2]=K;
+    
+    MPI_Allgather(norm_send,3,MPI_LONG_DOUBLE,norm_buf,3,MPI_LONG_DOUBLE,MPI_COMM_WORLD);
+    
+    //only use one node to do the normality test
+    if (rank==0){
+    
+        long double num_samp=0;
+        long double cumulative_S=0;//the Skewness calculated from the total sample
+        long double cumulative_K=0;//the Skewness calculated from the total sample
+    
+        for (int i=0; i<size; i++) {
+            int n_i=norm_buf[3*i];
+            cumulative_S+=n_i*norm_buf[3*i+1];
+            cumulative_K+=n_i*norm_buf[3*i+2];
+            num_samp+=n_i;
+        }
+        
+        cumulative_S=cumulative_S/num_samp;
+        cumulative_K=cumulative_K/num_samp;
+        
+        vector<long double> temp(5,0);
+        temp[0]=num_samp;temp[3]=cumulative_S;temp[4]=cumulative_K;
+        stringstream norm_res;
+        norm_res<<"Normality test: "<<endl;
+        norm_res<<"Number of samples is: "<<num_samp<<endl;
+        norm_res<<"Kurtosis is : "<<cumulative_K<<endl;
+        norm_res<<"Skewness is : "<<cumulative_S<<endl;
+        if (JBtest(temp)) {
+            norm_res<<"Null hypothesis is accepted: normality test passed"<<endl;
+        }
+        else {
+            norm_res<<"Null hypothesis is rejected: normality test failed"<<endl;
+        }
+        cout<<norm_res.str();
+        
+        
+    
+    }
+    
+    
+    
     
     MPI_Finalize();
 	return 0;
