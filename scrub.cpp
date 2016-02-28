@@ -313,11 +313,8 @@ int main(int argc, char **argv){
     vector<record> noise = result.second;
     
     //write the signal to output file
-    string test_string=record_vec2string(signal);
-    test_string+=to_string(rank);
-    test_string+='\n';
-    cout<<test_string;
-    MPI_Offset offset_out=test_string.size();//the offset of the local node
+    string signal_string=record_vec2string(signal);
+    MPI_Offset offset_out=signal_string.size();//the offset of the local node
     MPI_Offset * send_offset = new long long;
     *send_offset=offset_out;
     long long * rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
@@ -328,8 +325,27 @@ int main(int argc, char **argv){
     }
     MPI_File fh_out;
     MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
-    MPI_File_write_at(fh_out, cumulative_offset, test_string.c_str(), offset_out, MPI_BYTE, &status);
+    MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
 	MPI_File_close(&fh_out);
+    
+    //write the noise to output file
+    string noise_string=record_vec2string(noise);
+    offset_out=noise_string.size();//the offset of the local node
+    delete send_offset;
+    send_offset = new long long;
+    *send_offset=offset_out;
+    free(rbuf);
+    rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
+    MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
+    cumulative_offset=0;
+    for (int i=0;i<=rank;i++){
+        cumulative_offset+=rbuf[i];
+    }
+    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
+    MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
+    MPI_File_close(&fh_out);
+    
+    
 
     
     MPI_Finalize();
