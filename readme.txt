@@ -17,7 +17,7 @@ To run the executable, use the following code:
 GLOG_logtostderr=1  mpirun -np 16 scrub "data10k.txt" 2>log
 
 In case of glog is not installed, I included a no logging version where all 
-logging functions are commentte out
+logging functions are commentted out
 
 To compile the no log version, run:
 
