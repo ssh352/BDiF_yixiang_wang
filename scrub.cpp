@@ -409,7 +409,7 @@ int main(int argc, char **argv){
         else {
             norm_res<<"Null hypothesis is rejected: normality test failed"<<endl;
         }
-        cout<<norm_res.str();
+        //cout<<norm_res.str();
         
         ofstream norm_out;
         norm_out.open("normality_test_result.txt");

@@ -4,7 +4,7 @@ mpic++ -o scrub -I glog/include -L glog/lib/ -lglog scrub.cpp
 
 To run the executable, use the following code:
 
-GLOG_logtostderr=1  mpirun -np 16 scrub "data10k.txt" 2>$
+GLOG_logtostderr=1  mpirun -np 16 scrub "data10k.txt" 2>log
 
 NOTE:
 You can change data10k.txt to any other data file.

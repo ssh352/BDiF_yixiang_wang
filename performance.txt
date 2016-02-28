@@ -1,4 +1,4 @@
-Running time to read the data (node 0): 34313 ms
-Running time to scrub the data: 11302 ms
-Running time to out put the data: 1184 ms
-Running time to finish normality test: 396 ms
+Running time to read the data (node 0): 34211 ms
+Running time to scrub the data: 12723 ms
+Running time to out put the data: 1213 ms
+Running time to finish normality test: 407 ms
