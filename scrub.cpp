@@ -138,7 +138,56 @@ bool mean_variance_valid(double x, double mean, double st, double tol) {
     return abs(x - mean) < tol*st;
 }
 
-pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size,double tol=3) {
+void moments(vector<record> &price, vector<long double> & res) {
+    //stor the elements of JB test in the res vector
+    //res[0] number of samples
+    //res[1] centralized first moment
+    //res[2] centralized second moment
+    //res[3] centralized third moment
+    //res[4] centralized fourth moment
+    
+    vector<double> retr(price.size() - 1, 0);
+    vector<record>::iterator it_px = price.begin();
+    int count = 0;
+    long double mean = 0;
+    for (; (it_px + 1) != price.end(); it_px++) {
+        retr[count] = log((*(it_px + 1)).price / (*it_px).price);
+        mean += retr[count];
+        count++;
+    }
+    mean = mean / (retr.size() + 0.0);
+    
+    //calculate the standard deviation
+    long double sd = 0;
+    //calculate Skewness and Kurtosis
+    long double k = 0;//kurtosis
+    long double s = 0;//skewness
+    for (vector<double>::iterator it_rt = retr.begin(); it_rt != retr.end(); it_rt++) {
+        sd += pow((*it_rt) - mean, 2);
+        s += pow((*it_rt) - mean, 3);
+        k += pow((*it_rt) - mean, 4);
+    }
+    
+    sd = sqrt(sd / (retr.size() - 1.0));
+    s = (s / pow(sd, 3)) / (retr.size() + 0.0);
+    k = (k / pow(sd, 3)) / (retr.size() + 0.0);
+    
+    res[0] = retr.size();
+    res[1] = mean;
+    res[2] = pow(sd, 2);
+    res[3] = s;
+    res[4] = k;
+}
+
+bool JBtest(vector<long double> moment_vec) {
+    //moment_vec is calculated from the moments function
+    //here I assume large sample space and use Chi square 2 approximation
+    //the rejection region is the JB statistic greater than 5.991465 (calculated with r)
+    //return false if null is rejected
+    return moment_vec[0] * (pow(moment_vec[3], 2) / 6.0 + pow(moment_vec[4] - 3, 2) / 24.0) < 5.991465;
+}
+
+pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size, vector<long double> &mom ,double tol=3) {
     
     pair<vector<record>, vector<record> > res;
     LOG(INFO) << "initialize filter to scrub data";
@@ -202,6 +251,7 @@ pair<vector<record>, vector<record> > filter(vector<record> & src,int window_siz
     LOG(INFO) << "finished scrubbing";
     
     res = make_pair(signal, noise);
+    moments(signal, mom);
     return res;
 }
 
@@ -256,34 +306,28 @@ int main(int argc, char **argv){
     cout<<"cluster: "<<rank<<" the size of vector is"<<vec_rec.size()<<endl;
     MPI_File_close(&fh);
     
-    
-    pair<vector<record>, vector<record> > result = filter(vec_rec, 10,2);
+    vector<long double> moment(5, 0);
+    pair<vector<record>, vector<record> > result = filter(vec_rec, 10,moment,2);
     
     vector<record> signal = result.first;
     vector<record> noise = result.second;
     
-    string test_string="just for test,don't be series. rank is: ";
+    //write the signal to output file
+    string test_string=record_vec2string(signal);
     test_string+=to_string(rank);
     test_string+='\n';
     cout<<test_string;
     MPI_Offset offset_out=test_string.size();//the offset of the local node
-    
     MPI_Offset * send_offset = new long long;
     *send_offset=offset_out;
-    
     long long * rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
     MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
-    
-    
     MPI_Offset cumulative_offset=0;
-    
     for (int i=0;i<=rank;i++){
         cumulative_offset+=rbuf[i];
     }
-    
-    
     MPI_File fh_out;
-    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/out.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
+    MPI_File_open(MPI_COMM_WORLD, "/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
     MPI_File_write_at(fh_out, cumulative_offset, test_string.c_str(), offset_out, MPI_BYTE, &status);
 	MPI_File_close(&fh_out);
 
