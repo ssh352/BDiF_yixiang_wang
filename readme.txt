@@ -16,6 +16,13 @@ To run the executable, use the following code:
 
 GLOG_logtostderr=1  mpirun -np 16 SCRUB "data10k.txt" 2>log
 
+The SCRUB program will output file files: 
+signal.txt
+noise.txt,
+performance.txt: record the running time of each step
+normality_test_result.txt: if or not normality test is passed
+log: log file
+
 In case of glog is not installed, I included a no logging version where all 
 logging functions are commentted out
 
@@ -47,3 +54,4 @@ To run the program:
 
 mpirun -np 16 NORMAL "signal.txt"
 
+The normal program will output a file named exploration_result.txt
