@@ -1,128 +1,128 @@
-I0229 14:00:04.909651 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.909627 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.909428 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.909669 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.910003 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.909967 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.910151 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.912530 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.912574 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.912647 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.913455 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.913805 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.915000 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.916483 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.916846 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.917328 1886720768 scrub.cpp:305] MPI Initialized.
-I0229 14:00:04.922883 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.925750 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.925762 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.925770 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.930517 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.930527 1886720768 scrub.cpp:261] noise size of this node is21
-I0229 14:00:04.930534 1886720768 scrub.cpp:262] signal size of this node is603
-I0229 14:00:04.922757 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.922559 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.925530 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.925545 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.925551 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.931193 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.931202 1886720768 scrub.cpp:261] noise size of this node is15
-I0229 14:00:04.931210 1886720768 scrub.cpp:262] signal size of this node is609
-I0229 14:00:04.922632 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.925465 1886720768 scrub.cpp:200] The records number processed in this node is 625
-I0229 14:00:04.925482 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.925489 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.929824 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.929833 1886720768 scrub.cpp:261] noise size of this node is29
-I0229 14:00:04.929839 1886720768 scrub.cpp:262] signal size of this node is596
-I0229 14:00:04.922540 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.925442 1886720768 scrub.cpp:200] The records number processed in this node is 623
-I0229 14:00:04.925458 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.925467 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.929983 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.929992 1886720768 scrub.cpp:261] noise size of this node is23
-I0229 14:00:04.929998 1886720768 scrub.cpp:262] signal size of this node is600
-I0229 14:00:04.932617 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.932693 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.935462 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.935475 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.935482 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.940994 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.941006 1886720768 scrub.cpp:261] noise size of this node is24
-I0229 14:00:04.941014 1886720768 scrub.cpp:262] signal size of this node is600
-I0229 14:00:04.935441 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.935454 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.935462 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.942165 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.942181 1886720768 scrub.cpp:261] noise size of this node is26
-I0229 14:00:04.942189 1886720768 scrub.cpp:262] signal size of this node is598
-I0229 14:00:04.932726 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.935483 1886720768 scrub.cpp:200] The records number processed in this node is 623
-I0229 14:00:04.935495 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.935503 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.939815 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.939822 1886720768 scrub.cpp:261] noise size of this node is19
-I0229 14:00:04.939828 1886720768 scrub.cpp:262] signal size of this node is604
-I0229 14:00:04.942718 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.945536 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.945550 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.945557 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.949919 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.949928 1886720768 scrub.cpp:261] noise size of this node is22
-I0229 14:00:04.949934 1886720768 scrub.cpp:262] signal size of this node is602
-I0229 14:00:04.943120 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.945900 1886720768 scrub.cpp:200] The records number processed in this node is 625
-I0229 14:00:04.945914 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.945920 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.951562 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.951571 1886720768 scrub.cpp:261] noise size of this node is28
-I0229 14:00:04.951580 1886720768 scrub.cpp:262] signal size of this node is597
-I0229 14:00:04.952746 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.933120 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.935899 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.935914 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.935920 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.940335 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.940347 1886720768 scrub.cpp:261] noise size of this node is25
-I0229 14:00:04.940356 1886720768 scrub.cpp:262] signal size of this node is599
-I0229 14:00:04.952698 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.942762 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.945572 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.945586 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.945592 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.950937 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.950949 1886720768 scrub.cpp:261] noise size of this node is15
-I0229 14:00:04.950955 1886720768 scrub.cpp:262] signal size of this node is609
-I0229 14:00:04.946424 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.946439 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.946446 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.952078 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.952091 1886720768 scrub.cpp:261] noise size of this node is8
-I0229 14:00:04.952100 1886720768 scrub.cpp:262] signal size of this node is616
-I0229 14:00:04.954027 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.955147 1886720768 scrub.cpp:50] convert to a vector of records
-I0229 14:00:04.958045 1886720768 scrub.cpp:200] The records number processed in this node is 623
-I0229 14:00:04.958057 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.958065 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.955404 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.955422 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.955430 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.959511 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.959522 1886720768 scrub.cpp:261] noise size of this node is22
-I0229 14:00:04.959527 1886720768 scrub.cpp:262] signal size of this node is602
-I0229 14:00:04.955423 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.955441 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.955449 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.959705 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.959717 1886720768 scrub.cpp:261] noise size of this node is25
-I0229 14:00:04.959723 1886720768 scrub.cpp:262] signal size of this node is599
-I0229 14:00:04.956810 1886720768 scrub.cpp:200] The records number processed in this node is 624
-I0229 14:00:04.956825 1886720768 scrub.cpp:202] initialize filter to scrub data
-I0229 14:00:04.956832 1886720768 scrub.cpp:131] sliding window is initialized.
-I0229 14:00:04.961776 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.961786 1886720768 scrub.cpp:261] noise size of this node is2
-I0229 14:00:04.961792 1886720768 scrub.cpp:262] signal size of this node is622
-I0229 14:00:04.963371 1886720768 scrub.cpp:260] finished scrubbing
-I0229 14:00:04.963382 1886720768 scrub.cpp:261] noise size of this node is31
-I0229 14:00:04.963389 1886720768 scrub.cpp:262] signal size of this node is592
+I0229 15:28:24.975239 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.975240 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.975239 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.977200 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.975898 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.975848 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.975661 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.976305 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.976544 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.978395 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.980929 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.981719 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.980883 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.981703 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.982522 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.983264 1886720768 scrub.cpp:305] MPI Initialized.
+I0229 15:28:24.987514 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.987514 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.987522 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.987716 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.987799 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.990501 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:24.993273 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:24.993285 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:24.993293 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.990619 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:24.990638 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:24.990646 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.996068 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:24.996078 1886720768 scrub.cpp:261] noise size of this node is8
+I0229 15:28:24.996084 1886720768 scrub.cpp:262] signal size of this node is616
+I0229 15:28:24.990628 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:24.990641 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:24.990648 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.996289 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:24.996299 1886720768 scrub.cpp:261] noise size of this node is15
+I0229 15:28:24.996306 1886720768 scrub.cpp:262] signal size of this node is609
+I0229 15:28:24.990665 1886720768 scrub.cpp:200] The records number processed in this node is 625
+I0229 15:28:24.990681 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:24.990689 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.994822 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:24.994832 1886720768 scrub.cpp:261] noise size of this node is29
+I0229 15:28:24.994839 1886720768 scrub.cpp:262] signal size of this node is596
+I0229 15:28:24.994951 1886720768 scrub.cpp:200] The records number processed in this node is 623
+I0229 15:28:24.994966 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:24.994974 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.999119 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:24.999130 1886720768 scrub.cpp:261] noise size of this node is23
+I0229 15:28:24.999137 1886720768 scrub.cpp:262] signal size of this node is600
+I0229 15:28:25.000826 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.001436 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.001449 1886720768 scrub.cpp:261] noise size of this node is2
+I0229 15:28:25.001456 1886720768 scrub.cpp:262] signal size of this node is622
+I0229 15:28:25.002382 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.003609 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.003623 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.003630 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.002598 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.002614 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.002621 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.003865 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.005374 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.005390 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.005398 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.006603 1886720768 scrub.cpp:200] The records number processed in this node is 623
+I0229 15:28:25.006618 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.006624 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.006798 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.006808 1886720768 scrub.cpp:261] noise size of this node is25
+I0229 15:28:25.006814 1886720768 scrub.cpp:262] signal size of this node is599
+I0229 15:28:25.008390 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.008401 1886720768 scrub.cpp:261] noise size of this node is21
+I0229 15:28:25.008409 1886720768 scrub.cpp:262] signal size of this node is603
+I0229 15:28:25.010989 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.011000 1886720768 scrub.cpp:261] noise size of this node is26
+I0229 15:28:25.011008 1886720768 scrub.cpp:262] signal size of this node is598
+I0229 15:28:25.011173 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.011184 1886720768 scrub.cpp:261] noise size of this node is19
+I0229 15:28:25.011191 1886720768 scrub.cpp:262] signal size of this node is604
+I0229 15:28:25.010785 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.012198 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.012655 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.013551 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.013566 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.013574 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.015048 1886720768 scrub.cpp:200] The records number processed in this node is 625
+I0229 15:28:25.015065 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.015074 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.015506 1886720768 scrub.cpp:200] The records number processed in this node is 623
+I0229 15:28:25.015521 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.015527 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.016618 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.019428 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.019440 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.019446 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.020700 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.020711 1886720768 scrub.cpp:261] noise size of this node is28
+I0229 15:28:25.020719 1886720768 scrub.cpp:262] signal size of this node is597
+I0229 15:28:25.019210 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.019222 1886720768 scrub.cpp:261] noise size of this node is15
+I0229 15:28:25.019228 1886720768 scrub.cpp:262] signal size of this node is609
+I0229 15:28:25.020934 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.020946 1886720768 scrub.cpp:261] noise size of this node is31
+I0229 15:28:25.020953 1886720768 scrub.cpp:262] signal size of this node is592
+I0229 15:28:25.020918 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.023646 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.023661 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.023669 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:24.987550 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.023684 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.023695 1886720768 scrub.cpp:261] noise size of this node is22
+I0229 15:28:25.023704 1886720768 scrub.cpp:262] signal size of this node is602
+I0229 15:28:25.024438 1886720768 scrub.cpp:50] convert to a vector of records
+I0229 15:28:25.027341 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.027518 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.027531 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.029533 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.029557 1886720768 scrub.cpp:261] noise size of this node is25
+I0229 15:28:25.029564 1886720768 scrub.cpp:262] signal size of this node is599
+I0229 15:28:25.032730 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.032747 1886720768 scrub.cpp:261] noise size of this node is24
+I0229 15:28:25.032753 1886720768 scrub.cpp:262] signal size of this node is600
+I0229 15:28:25.032328 1886720768 scrub.cpp:200] The records number processed in this node is 624
+I0229 15:28:25.032349 1886720768 scrub.cpp:202] initialize filter to scrub data
+I0229 15:28:25.032357 1886720768 scrub.cpp:131] sliding window is initialized.
+I0229 15:28:25.035974 1886720768 scrub.cpp:260] finished scrubbing
+I0229 15:28:25.035985 1886720768 scrub.cpp:261] noise size of this node is22
+I0229 15:28:25.035994 1886720768 scrub.cpp:262] signal size of this node is602
