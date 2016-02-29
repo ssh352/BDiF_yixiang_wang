@@ -408,6 +408,8 @@ int main(int argc, char **argv){
         stringstream norm_res;
         norm_res<<"Normality test: "<<endl;
         norm_res<<"Number of samples is: "<<num_samp<<endl;
+        norm_res<<"Skewness is: "<<cumulative_S<<endl;
+        norm_res<<"Kurtosis is: "<<cumulative_K<<endl;
         if (JBtest(temp)) {
             norm_res<<"Null hypothesis is accepted: normality test passed"<<endl;
         }

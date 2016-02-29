@@ -1,3 +1,5 @@
 Normality test: 
 Number of samples is: 9615
+Skewness is: -0.00517526
+Kurtosis is: 0.602616
 Null hypothesis is rejected: normality test failed
