@@ -40,8 +40,10 @@ However, a NORMAL program is also available in case that user wants to test
 the normality of input data without scrubbing.
 
 To compile:
+
 mpic++ -o NORMAL norm.cpp
 
 To run the program:
+
 mpirun -np 16 NORMAL "signal.txt"
 
