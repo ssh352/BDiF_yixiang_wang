@@ -340,7 +340,7 @@ int main(int argc, char **argv){
     t2=clock();//record the time finishing scrubbing
     
     MPI_Offset cumulative_offset=0;
-    for (int i=0;i<=rank;i++){
+    for (int i=0;i<rank;i++){
         cumulative_offset+=rbuf[i];
     }
     MPI_File fh_out;
@@ -360,7 +360,7 @@ int main(int argc, char **argv){
     rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
     MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
     cumulative_offset=0;
-    for (int i=0;i<=rank;i++){
+    for (int i=0;i<rank;i++){
         cumulative_offset+=rbuf[i];
     }
     //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt"

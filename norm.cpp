@@ -7,7 +7,6 @@
 #include <vector>
 #include <fstream>
 #include <cmath>
-#include "glog/logging.h"
 #include <sstream>
 #include <fstream>
 #include <time.h>
@@ -31,28 +30,36 @@ struct record {
 time_struct timeConvert(string source) {
 
 	string::iterator it;
+    
 	string temp;
-	for (it = source.begin(); (*it) != '.'; it++) {
-		if ((*it) != ':') temp += *it;
-	}
-	double d1 = atof(temp.c_str());
-	temp.clear();
-	for (; it != source.end(); it++) temp += *it;
-	double d2 = atof(temp.c_str());
-
-	time_struct temp_t;
-	temp_t.min = d1;
-	temp_t.sec = d2;
+    time_struct temp_t;
+    temp_t.min=0;
+    temp_t.sec=0;
+    
+    try {
+        for (it = source.begin(); (*it) != '.'; it++) {
+            if ((*it) != ':') temp += *it;
+        }
+        double d1 = atof(temp.c_str());
+        temp.clear();
+        for (; it != source.end(); it++) temp += *it;
+        double d2 = atof(temp.c_str());
+        
+        
+        temp_t.min = d1;
+        temp_t.sec = d2;
+    } catch(...) {
+        cout<<"incorrect data format!"<<endl;
+    }
+    
 	return temp_t;
 }
 
 vector<record> string2record(char a[]) {
-    LOG(INFO) << "convert to a vector of records";
     string temp = a;
     string buffer;
     vector<record> rec_vec;
     string::iterator it = temp.begin();
-    //skip the first first record since it is likely to be broken
     while (it != temp.end() && (*it) != '\n') it++;
     it++;
     
@@ -60,7 +67,6 @@ vector<record> string2record(char a[]) {
         
         while (it != temp.end() && (*it) != '\n')
         {
-            //cout << *it;
             buffer += *it;
             it++;
         }
@@ -103,7 +109,7 @@ vector<record> string2record(char a[]) {
         }//for try
         catch (...) {//catch every thing
             cout << endl << "invalid data format!" << endl;
-            LOG(INFO) << "Invalid data format when converting from string to record.";
+            //LOG(INFO) << "Invalid data format when converting from string to record.";
         }
     }
     return rec_vec;
@@ -114,32 +120,6 @@ void swap(vector<record>& src, int p1, int p2) {
     temp = src[p1];
     src[p1] = src[p2];
     src[p2] = temp;
-}
-
-bool islater(record r1, record r2) {
-    //return true if r1 is later record than r2
-    //which means the time value of r1 is greater than r2
-    if (r1.time.min != r2.time.min) {
-        return (r1.time.min > r2.time.min) ? true : false; }
-    else return (r1.time.sec > r2.time.sec) ? true : false;
-}
-
-void initial_window(vector<record>& src, int start, int end) {
-    //this is a small sort
-    //so the advantage of quick sort over bubble sort is not obvious
-    //so here I just implement a simple bubble sort
-    LOG(INFO) << "sliding window is initialized.";
-    int n = end - start;
-    for (int i = 0; i < n; i++) {
-        for (int j = start + 1; j <= end - i; j++) {
-            if (islater(src[j - 1], src[j])) swap(src, j - 1, j);
-        }
-    }
-    
-}
-
-bool mean_variance_valid(double x, double mean, double st, double tol) {
-    return abs(x - mean) < tol*st;
 }
 
 void moments(vector<record> &price, vector<long double> & res) {
@@ -193,79 +173,6 @@ bool JBtest(vector<long double> moment_vec) {
 
 string record_vec2string(vector<record> src);
 
-pair<vector<record>, vector<record> > filter(vector<record> & src,int window_size, vector<long double> &mom ,double tol=3) {
-    
-    if (window_size>src.size())window_size=src.size()-5;//to handle the case that the input data set is too small
-    
-    LOG(INFO) << "The records number processed in this node is "<<src.size();
-    pair<vector<record>, vector<record> > res;
-    LOG(INFO) << "initialize filter to scrub data";
-
-    initial_window(src, 0, window_size - 1);
-    vector<record>::iterator it_src = src.begin();
-    
-    vector<record> signal;
-    vector<record>::iterator it_sig = signal.begin();
-    vector<record> noise;
-    vector<record>::iterator it_nos = noise.begin();
-    double sum = 0;
-    double squared_sum = 0;
-    double running_mean = 0;
-    for (int count = 0; count < window_size; count++) {
-        sum += (*it_src).price;
-        it_src++;
-    }
-    double number = window_size;
-    running_mean = sum / number;
-    
-    for (int count = 0; count < window_size; count++) {
-        squared_sum += pow(src[count].price-running_mean,2);
-    }
-    
-    for (; it_src != src.end(); it_src++) {
-        if (islater(*(it_src - window_size), *it_src)) {
-            noise.push_back(*it_src);
-            it_src = src.erase(it_src);
-            it_src--;
-        }
-        else if (islater(*(it_src - 1), *it_src)) {
-            sum += (*it_src).price;
-            number += 1;
-            running_mean = sum / number;//update the running mean
-            squared_sum += pow((*it_src).price - running_mean, 2);
-            vector<record>::iterator it_temp = it_src;
-            while (islater(*(it_temp - 1), *it_temp)) {
-                record temp_record = *it_temp;
-                *it_temp = *(it_temp - 1);
-                *(it_temp - 1) = temp_record;
-                it_temp--;
-            }
-        }
-        else {
-            sum += (*it_src).price;
-            number += 1;
-            running_mean = sum / number;//update the running mean
-            squared_sum += pow((*it_src).price - running_mean, 2);
-        }
-    }
-    
-    double mean = sum / number;
-    double sd = sqrt(squared_sum / (number - 1.0));
-    
-    for (it_src = src.begin(); it_src != src.end(); it_src++) {
-        if (mean_variance_valid((*it_src).price, mean, sd, tol)&&(*it_src).size>0) signal.push_back(*it_src);
-        else noise.push_back(*it_src);
-    }
-    
-    LOG(INFO) << "finished scrubbing";
-    LOG(INFO)<< "noise size of this node is"<<noise.size();
-    LOG(INFO)<< "signal size of this node is"<<signal.size();
-    
-    res = make_pair(signal, noise);
-    moments(signal, mom);
-    return res;
-}
-
 string record2string(record src) {
     stringstream stream_out;
     long long date = (long long)(src.time.min) / 1000000;
@@ -289,85 +196,31 @@ string record_vec2string(vector<record> src) {
 }
 
 int main(int argc, char **argv){
-    
-    clock_t t0,t1,t2,t3,t4;
-    
-    t0=clock();
-    
-    google::InitGoogleLogging(argv[0]);
 
-    MPI_Offset FILESIZE;//=stoi(argv[1]);
+    MPI_Offset FILESIZE;
     
 	int rank, size, bufsize, nints;
 	MPI_File fh;
 	MPI_Status status;
 	MPI_Init(&argc, &argv);
-    LOG(INFO) << "MPI Initialized.";
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
     MPI_File_open(MPI_COMM_WORLD,argv[1],MPI_MODE_RDONLY,MPI_INFO_NULL,&fh);
-    //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/data1000k.txt"
-    
     MPI_File_get_size(fh, &FILESIZE);
     
 	bufsize = FILESIZE/size;
 	nints = bufsize/sizeof(char);
 	char buf[nints];
 	
-    
     MPI_File_read_at(fh, rank*bufsize, buf, nints, MPI_BYTE, &status);
-    
-    t1=clock();
     
     vector<record> vec_rec=string2record(buf);
     MPI_File_close(&fh);
     
     
     vector<long double> moment(5, 0);
-    pair<vector<record>, vector<record> > result = filter(vec_rec, 500,moment,2);
     
-    vector<record> signal = result.first;
-    vector<record> noise = result.second;
-    
-    //write the signal to output file
-    string signal_string=record_vec2string(signal);
-    MPI_Offset offset_out=signal_string.size();//the offset of the local node
-    MPI_Offset * send_offset = new long long;
-    *send_offset=offset_out;
-    long long * rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
-    MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
-    
-    t2=clock();//record the time finishing scrubbing
-    
-    MPI_Offset cumulative_offset=0;
-    for (int i=0;i<rank;i++){
-        cumulative_offset+=rbuf[i];
-    }
-    MPI_File fh_out;
-    MPI_File_open(MPI_COMM_WORLD, "signal.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
-    MPI_File_write_at(fh_out, cumulative_offset, signal_string.c_str(), offset_out, MPI_BYTE, &status);
-	MPI_File_close(&fh_out);
-    
-    //write the noise to output file
-    string noise_string=record_vec2string(noise);
-    offset_out=noise_string.size();//the offset of the local node
-    delete send_offset;
-    send_offset = new long long;
-    *send_offset=offset_out;
-    free(rbuf);
-    rbuf = (long long *)malloc(size*sizeof(long long));//define the receive buffer
-    MPI_Allgather( send_offset, 1, MPI_LONG, rbuf, 1, MPI_LONG, MPI_COMM_WORLD);
-    cumulative_offset=0;
-    for (int i=0;i<rank;i++){
-        cumulative_offset+=rbuf[i];
-    }
-    //"/Users/wyx/Documents/Baruch MFE/BDiF_yixiang_wang/noise.txt"
-    MPI_File_open(MPI_COMM_WORLD, "noise.txt", MPI_MODE_CREATE|MPI_MODE_WRONLY, MPI_INFO_NULL, &fh_out);
-    MPI_File_write_at(fh_out, cumulative_offset, noise_string.c_str(), offset_out, MPI_BYTE, &status);
-    MPI_File_close(&fh_out);
-    
-    t3=clock();
-    
+    moments(vec_rec,moment);
     
     //gather all the information about the normality test
     long double N = moment[0];//number of samples
@@ -383,6 +236,7 @@ int main(int argc, char **argv){
     MPI_Allgather(norm_send,3,MPI_LONG_DOUBLE,norm_buf,3,MPI_LONG_DOUBLE,MPI_COMM_WORLD);
     
     //only use one node to do the normality test
+    
     if (rank==0){
     
         long double num_samp=0;
@@ -413,23 +267,10 @@ int main(int argc, char **argv){
         //cout<<norm_res.str();
         
         ofstream norm_out;
-        norm_out.open("normality_test_result.txt");
+        norm_out.open("exploration_result.txt");
         norm_out<<norm_res.str();
         norm_out.close();
     }
-    
-    t4=clock();
-    //output the performance analysis
-    if (rank==0){
-        ofstream performance_out;
-        performance_out.open("performance.txt");
-        performance_out<<"Running time to read the data (node 0): "<<t1-t0<<" ms"<<endl;
-        performance_out<<"Running time to scrub the data: "<<t2-t1<<" ms"<<endl;
-        performance_out<<"Running time to out put the data: "<<t3-t2<<" ms"<<endl;
-        performance_out<<"Running time to finish normality test: "<<t4-t3<<" ms"<<endl;
-        performance_out.close();
-    }
-    
     
     
     MPI_Finalize();
