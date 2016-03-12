@@ -1,3 +1,7 @@
-transac_rec:("PSFI";",") 0:`data.csv
+transac_record:("PSFID";",") 0:`data.csv
 
-transac_tab:flip `time`ticker`price`size!transac_rec
+transac_table:flip `time`ticker`price`size`date!transac_record
+
+vwap:select vwap:(sum price*size)%(sum size) by date,ticker from transac_table
+
+save `:vwap.csv
