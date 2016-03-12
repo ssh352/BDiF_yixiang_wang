@@ -2,7 +2,7 @@
 """
 @author: Yixiang Wang
 """
-
+import sys
 import datetime
 from random import randint
 from datetime import timedelta
@@ -13,8 +13,8 @@ from yahoo_finance import Share
 
 st= datetime.datetime(2016, 3, 7, 9, 45, 0, 00001)#set the default starting time
 
-N_rec=20000#number of record generated
-    
+N_rec=int(sys.argv[1])#number of record generated
+
 #reading the symbol data from csv file    
 f = open('DJ_data.csv', 'rb')
 reader = csv.reader(f)
