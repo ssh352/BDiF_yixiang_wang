@@ -42,14 +42,16 @@ f.close()
 #print random.uniform(1.5, 1.9)
 prices= range(30)
 for i in prices:
-    prices[i]=Share(symbol['Ticker'][i]).get_price()
-
-print prices
+    prices[i]=float(Share(symbol['Ticker'][i]).get_price())
 
 with open ('data.txt', 'w') as fo:
    for i in range(N_rec):
+       tic=randint(0,29)
+       move=randint(-1,1)
+       size=randint(1,1000)
+       prices[tic]=prices[tic]*(1+move*0.1)
        st+=timedelta(microseconds=randint(0, 100000))
-       fo.write(st.strftime('%m/%d/%Y:%H:%M:%S.%f') +','+'good'+ '\n')
+       fo.write(st.strftime('%m/%d/%Y:%H:%M:%S.%f') +','+symbol['Ticker'][tic]+ ','+str(prices[tic])+','+str(size)+'\n')
     
 
 
