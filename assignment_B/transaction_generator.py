@@ -41,7 +41,7 @@ with open ('data.csv', 'w') as fo:
        size=randint(1,1000)
        prices[tic]=prices[tic]*(1+move*0.025)
        st+=timedelta(microseconds=randint(0, 100000))
-       fo.write(st.strftime('%m/%d/%Y:%H:%M:%S.%f') +','+symbol['Ticker'][tic]+ ','+str(prices[tic])+','+str(size)+','+st.strftime('%m/%d/%Y')+'\n')
+       fo.write(st.strftime('%m/%d/%Y:%H:%M:%S.%f') +','+symbol['Ticker'][tic]+ ','+str(prices[tic])+','+str(size)+'\n')
     
 
 
